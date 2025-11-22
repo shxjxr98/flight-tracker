@@ -14,6 +14,18 @@ export default function Home() {
     const [error, setError] = useState('');
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [alertsEnabled, setAlertsEnabled] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    const [refreshThrottle, setRefreshThrottle] = useState(false);
+    const [toast, setToast] = useState('');
+
+    // Check alerts status on mount
+    useEffect(() => {
+        const stored = localStorage.getItem('flight-alerts-enabled');
+        if (stored === 'true') {
+            setAlertsEnabled(true);
+        }
+    }, []);
 
     // Update current time every second for analog clocks
     useEffect(() => {
@@ -22,6 +34,18 @@ export default function Home() {
         }, 1000);
         return () => clearInterval(timer);
     }, []);
+
+    // Keyboard shortcut for refresh
+    useEffect(() => {
+        const handleKeyPress = (e: KeyboardEvent) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r' && flight) {
+                e.preventDefault();
+                handleRefresh();
+            }
+        };
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [flight, query]);
 
     // Auto-refresh logic (every 30 seconds if data is fresh)
     useEffect(() => {
@@ -64,17 +88,154 @@ export default function Home() {
     };
 
     const handleRefresh = async () => {
-        if (!query.trim()) return;
+        if (!query.trim() || refreshThrottle) return;
+
+        setRefreshing(true);
+        setRefreshThrottle(true);
 
         try {
             const results = await searchFlights(query);
             if (results.length > 0) {
                 setFlight(results[0]);
                 setLastUpdated(new Date());
+                showToast('Flight data refreshed');
             }
         } catch (err) {
-            console.error('Auto-refresh failed:', err);
+            setError('Can\'t reach server. Please try again.');
+        } finally {
+            setRefreshing(false);
+            // Throttle for 5 seconds
+            setTimeout(() => setRefreshThrottle(false), 5000);
         }
+    };
+
+    // 1. Get Alerts
+    const handleGetAlerts = async () => {
+        if (alertsEnabled) {
+            // Toggle off
+            setAlertsEnabled(false);
+            localStorage.setItem('flight-alerts-enabled', 'false');
+            showToast('Alerts disabled');
+            return;
+        }
+
+        // Request notification permission
+        if ('Notification' in window) {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                setAlertsEnabled(true);
+                localStorage.setItem('flight-alerts-enabled', 'true');
+                showToast('Alerts enabled!');
+                // In production, subscribe to push service here
+            } else {
+                // Fallback to email
+                const flightId = flight ? `${flight.airline}${flight.flightNumber}` : 'Flight';
+                const date = flight ? formatDate(flight.startTime) : '';
+                window.location.href = `mailto:alerts@americanairlines.com?subject=Alert me for ${flightId} on ${date}&body=Please send me alerts for this flight.`;
+            }
+        } else {
+            // No notification support, use email
+            const flightId = flight ? `${flight.airline}${flight.flightNumber}` : 'Flight';
+            const date = flight ? formatDate(flight.startTime) : '';
+            window.location.href = `mailto:alerts@americanairlines.com?subject=Alert me for ${flightId} on ${date}&body=Please send me alerts for this flight.`;
+        }
+    };
+
+    // 2. Share Flight
+    const handleShareFlight = async () => {
+        if (!flight) return;
+
+        const flightId = `${flight.airline}${flight.flightNumber}`;
+        const date = new Date(flight.startTime).toISOString().split('T')[0];
+        const shareData = {
+            title: `${flightId} flight status`,
+            text: `${flightId} ${flight.startLocation.split('(')[1]?.replace(')', '')}→${flight.endLocation.split('(')[1]?.replace(')', '')} on ${formatDate(flight.startTime)} is ${flight.status}. Track live:`,
+            url: `${window.location.origin}?flight=${flightId}&date=${date}`
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                // User cancelled
+            }
+        } else {
+            // Fallback to clipboard
+            try {
+                await navigator.clipboard.writeText(shareData.url);
+                showToast('Link copied to clipboard!');
+            } catch (err) {
+                showToast('Unable to copy link');
+            }
+        }
+    };
+
+    // 3. Add to Calendar
+    const handleAddToCalendar = () => {
+        if (!flight) return;
+
+        const formatICSDate = (dateString: string) => {
+            return new Date(dateString).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        };
+
+        const flightId = `${flight.airline}${flight.flightNumber}`;
+        const depCode = flight.startLocation.split('(')[1]?.replace(')', '');
+        const arrCode = flight.endLocation.split('(')[1]?.replace(')', '');
+        const depName = flight.startLocation.split('(')[0].trim();
+        const arrName = flight.endLocation.split('(')[0].trim();
+
+        const icsBody = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//FlightTracker//Flight//EN
+BEGIN:VEVENT
+UID:${flightId}-${Date.now()}@flighttracker.com
+DTSTART:${formatICSDate(flight.startTime)}
+DTEND:${formatICSDate(flight.endTime)}
+SUMMARY:Flight ${flightId} ${depCode}→${arrCode}
+DESCRIPTION:${flightId} on ${formatDate(flight.startTime)}. Status: ${flight.status}
+LOCATION:${depName} (${depCode}) → ${arrName} (${arrCode})
+END:VEVENT
+END:VCALENDAR`.trim();
+
+        const blob = new Blob([icsBody], { type: 'text/calendar' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${flightId}-${formatDate(flight.startTime).replace(/\s/g, '')}.ics`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Calendar event downloaded');
+    };
+
+    // 4. Terminal Map
+    const handleTerminalMap = () => {
+        if (!flight) return;
+
+        const depCode = flight.startLocation.split('(')[1]?.replace(')', '');
+        const arrCode = flight.endLocation.split('(')[1]?.replace(')', '');
+
+        // Determine which terminal to show based on flight progress
+        const progress = getProgress();
+        let terminal = '';
+
+        if (progress < 50) {
+            // Show departure terminal
+            if (depCode === 'JFK') terminal = 'JFK Terminal 8';
+            else terminal = `${depCode} Airport Terminal`;
+        } else {
+            // Show arrival terminal
+            if (arrCode === 'LHR') terminal = 'LHR Terminal 3';
+            else terminal = `${arrCode} Airport Terminal`;
+        }
+
+        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(terminal)}`;
+        window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+    };
+
+    // Toast notification helper
+    const showToast = (message: string) => {
+        setToast(message);
+        setTimeout(() => setToast(''), 3000);
     };
 
     const formatTime = (dateString: string) => {
@@ -137,6 +298,24 @@ export default function Home() {
     return (
         <main className="container">
             <DarkModeToggle />
+
+            {/* Toast Notification */}
+            {toast && (
+                <div style={{
+                    position: 'fixed',
+                    top: '80px',
+                    right: '20px',
+                    background: 'var(--aa-primary)',
+                    color: 'white',
+                    padding: '1rem 1.5rem',
+                    borderRadius: 'var(--radius)',
+                    boxShadow: 'var(--shadow-lg)',
+                    zIndex: 1000,
+                    animation: 'slideUp 0.3s ease-out',
+                }}>
+                    {toast}
+                </div>
+            )}
 
             <div className="header">
                 <h1>FlightTracker</h1>
@@ -269,16 +448,32 @@ export default function Home() {
 
                     {/* Action Zone */}
                     <div className="action-zone">
-                        <button className="action-button" aria-label="Get flight alerts">
-                            🔔 Get Alerts
+                        <button
+                            className="action-button"
+                            onClick={handleGetAlerts}
+                            aria-label={alertsEnabled ? "Disable flight alerts" : "Get flight alerts"}
+                        >
+                            {alertsEnabled ? '🔔 Alerts ON' : '🔔 Get Alerts'}
                         </button>
-                        <button className="action-button secondary" aria-label="Share flight">
+                        <button
+                            className="action-button secondary"
+                            onClick={handleShareFlight}
+                            aria-label="Share flight"
+                        >
                             📤 Share Flight
                         </button>
-                        <button className="action-button secondary" aria-label="Add to calendar">
+                        <button
+                            className="action-button secondary"
+                            onClick={handleAddToCalendar}
+                            aria-label="Add to calendar"
+                        >
                             📅 Add to Calendar
                         </button>
-                        <button className="action-button secondary" aria-label="View terminal map">
+                        <button
+                            className="action-button secondary"
+                            onClick={handleTerminalMap}
+                            aria-label="View terminal map"
+                        >
                             🗺️ Terminal Map
                         </button>
                     </div>
@@ -297,10 +492,11 @@ export default function Home() {
                         <button
                             className="refresh-button"
                             onClick={handleRefresh}
+                            disabled={refreshThrottle}
                             aria-label="Refresh flight data"
-                            title="Refresh flight data"
+                            title={refreshThrottle ? "Please wait 5 seconds" : "Refresh flight data (Ctrl+R)"}
                         >
-                            🔄 Refresh
+                            {refreshing ? '🔄 Refreshing...' : '🔄 Refresh'}
                         </button>
                     </div>
 
