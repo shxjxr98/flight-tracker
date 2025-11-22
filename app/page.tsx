@@ -7,6 +7,8 @@ import ProgressBar from '../components/ProgressBar';
 import AnalogClock from '../components/AnalogClock';
 import dynamic from 'next/dynamic';
 import WeatherCard from '../components/WeatherCard';
+import SkeletonLoader from '../components/SkeletonLoader';
+import { triggerHaptic } from '../utils/haptic';
 
 const FlightMap = dynamic(() => import('../components/FlightMap'), { ssr: false });
 
@@ -57,11 +59,14 @@ export default function Home() {
             if (results.length > 0) {
                 setFlight(results[0]);
                 setLastUpdated(new Date());
+                triggerHaptic('success');
             } else {
                 setError('Flight not found. Please check the flight number.');
+                triggerHaptic('error');
             }
         } catch (err) {
             setError('Unable to connect. Please check your internet connection and try again.');
+            triggerHaptic('error');
         } finally {
             setLoading(false);
         }
@@ -69,6 +74,7 @@ export default function Home() {
 
     const handleRefresh = async () => {
         if (!query.trim()) return;
+        triggerHaptic('medium');
 
         try {
             const results = await searchFlights(query);
@@ -174,6 +180,56 @@ export default function Home() {
                     {loading ? 'Searching...' : 'Track Flight'}
                 </button>
             </form>
+
+            {loading && (
+                <div className="flight-card" role="status" aria-label="Loading flight data">
+                    {/* Hero Zone Skeleton */}
+                    <div className="hero-zone">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                <SkeletonLoader width="120px" height="24px" />
+                                <SkeletonLoader width="200px" height="40px" />
+                            </div>
+                            <SkeletonLoader width="100px" height="32px" borderRadius="2rem" />
+                        </div>
+                        <SkeletonLoader width="180px" height="20px" />
+                    </div>
+
+                    {/* Progress Zone Skeleton */}
+                    <div className="progress-zone">
+                        <SkeletonLoader height="12px" borderRadius="6px" style={{ marginBottom: '2rem' }} />
+                        <SkeletonLoader height="150px" borderRadius="1rem" />
+                    </div>
+
+                    {/* Time Zone Skeleton */}
+                    <div className="time-zone">
+                        <div className="time-card">
+                            <SkeletonLoader width="80px" height="20px" style={{ marginBottom: '1rem' }} />
+                            <SkeletonLoader width="60px" height="40px" style={{ marginBottom: '0.5rem' }} />
+                            <SkeletonLoader width="140px" height="24px" style={{ marginBottom: '1rem' }} />
+                            <SkeletonLoader height="150px" borderRadius="50%" width="150px" style={{ margin: '0 auto 1rem' }} />
+                            <SkeletonLoader width="100px" height="32px" style={{ margin: '0 auto' }} />
+                        </div>
+                        <div className="time-card">
+                            <SkeletonLoader width="80px" height="20px" style={{ marginBottom: '1rem' }} />
+                            <SkeletonLoader width="60px" height="40px" style={{ marginBottom: '0.5rem' }} />
+                            <SkeletonLoader width="140px" height="24px" style={{ marginBottom: '1rem' }} />
+                            <SkeletonLoader height="150px" borderRadius="50%" width="150px" style={{ margin: '0 auto 1rem' }} />
+                            <SkeletonLoader width="100px" height="32px" style={{ margin: '0 auto' }} />
+                        </div>
+                    </div>
+
+                    {/* Details Zone Skeleton */}
+                    <div className="details-zone">
+                        {[1, 2, 3, 4].map((i) => (
+                            <div key={i} className="detail-item">
+                                <SkeletonLoader width="60px" height="16px" style={{ marginBottom: '0.5rem' }} />
+                                <SkeletonLoader width="100px" height="24px" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {error && (
                 <div className="error-message" role="alert">
@@ -301,7 +357,10 @@ export default function Home() {
                             <div className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
                                 {mockDetails.weather}
                                 <button
-                                    onClick={() => setTempUnit(tempUnit === 'F' ? 'C' : 'F')}
+                                    onClick={() => {
+                                        setTempUnit(tempUnit === 'F' ? 'C' : 'F');
+                                        triggerHaptic('light');
+                                    }}
                                     aria-label={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
                                     title={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
                                     style={{
@@ -331,10 +390,13 @@ export default function Home() {
                             className="action-button"
                             aria-label="Get flight alerts"
                             onClick={() => {
+                                triggerHaptic('light');
                                 const email = prompt('Enter your email address to receive flight alerts:');
                                 if (email && email.includes('@')) {
+                                    triggerHaptic('success');
                                     alert(`✅ Alerts enabled for ${email}\n\nYou'll receive notifications about:\n• Gate changes\n• Delays\n• Boarding calls\n• Baggage carousel updates`);
                                 } else if (email) {
+                                    triggerHaptic('warning');
                                     alert('❌ Please enter a valid email address');
                                 }
                             }}
@@ -345,6 +407,7 @@ export default function Home() {
                             className="action-button secondary"
                             aria-label="Share flight"
                             onClick={async () => {
+                                triggerHaptic('light');
                                 const shareData = {
                                     title: `Flight ${flight.airline} ${flight.flightNumber}`,
                                     text: `${flight.airline} ${flight.flightNumber} - ${flight.status}\nDeparture: ${flight.startLocation} at ${formatTime(flight.startTime)}\nArrival: ${flight.endLocation} at ${formatTime(flight.endTime)}`,
@@ -354,14 +417,17 @@ export default function Home() {
                                 if (navigator.share) {
                                     try {
                                         await navigator.share(shareData);
+                                        triggerHaptic('success');
                                     } catch (err) {
                                         if ((err as Error).name !== 'AbortError') {
                                             console.error('Share failed:', err);
+                                            triggerHaptic('error');
                                         }
                                     }
                                 } else {
                                     // Fallback: copy to clipboard
                                     navigator.clipboard.writeText(shareData.text);
+                                    triggerHaptic('success');
                                     alert('✅ Flight details copied to clipboard!');
                                 }
                             }}
@@ -372,6 +438,7 @@ export default function Home() {
                             className="action-button secondary"
                             aria-label="Add to calendar"
                             onClick={() => {
+                                triggerHaptic('light');
                                 // Create .ics file for calendar
                                 const depDate = new Date(flight.startTime);
                                 const arrDate = new Date(flight.endTime);
@@ -420,6 +487,7 @@ END:VCALENDAR`;
                             className="action-button secondary"
                             aria-label="View terminal map"
                             onClick={() => {
+                                triggerHaptic('light');
                                 // Extract airport code
                                 const airportCode = flight.startLocation.split('(')[1]?.replace(')', '');
                                 const terminal = mockDetails.terminal;
@@ -448,7 +516,10 @@ END:VCALENDAR`;
                         </div>
                         <button
                             className="refresh-button"
-                            onClick={handleRefresh}
+                            onClick={() => {
+                                handleRefresh();
+                                triggerHaptic('medium');
+                            }}
                             aria-label="Refresh flight data"
                             title="Refresh flight data"
                         >
