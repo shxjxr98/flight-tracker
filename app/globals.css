@@ -292,7 +292,7 @@ h1 {
 }
 
 /* Mobile Responsive Styles */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .container {
         padding: 2rem 1rem;
     }
