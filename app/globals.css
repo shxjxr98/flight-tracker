@@ -150,29 +150,232 @@ h1 {
 .flight-header {
     display: flex;
     justify-content: space-between;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 1.25rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
 }
 
-.time-block {
-    text-align: left !important;
+.flight-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--foreground);
+}
+
+.flight-status {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.status-on-time {
+    background: oklch(0.9 0.1 150);
+    color: oklch(0.3 0.1 150);
+}
+
+.status-delayed {
+    background: oklch(0.9 0.1 85);
+    color: oklch(0.4 0.1 85);
+}
+
+.status-cancelled {
+    background: oklch(0.9 0.1 25);
+    color: oklch(0.4 0.1 25);
+}
+
+.dark .status-on-time {
+    background: oklch(0.25 0.1 150);
+    color: oklch(0.8 0.1 150);
+}
+
+.dark .status-delayed {
+    background: oklch(0.25 0.1 85);
+    color: oklch(0.8 0.1 85);
+}
+
+.dark .status-cancelled {
+    background: oklch(0.25 0.1 25);
+    color: oklch(0.8 0.1 25);
+}
+
+.route-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.location {
+    flex: 1;
+}
+
+.location-code {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.location-name {
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+}
+
+.route-line {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    margin: 0 2rem;
+    position: relative;
+}
+
+.route-line::after {
+    content: '✈';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    background: var(--card);
+    padding: 0 0.5rem;
+    color: var(--muted-foreground);
+}
+
+.time-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: var(--muted);
+    padding: 1.5rem;
+    border-radius: calc(var(--radius) - 4px);
 }
 
 .time-block h3 {
-    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .time-value {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--foreground);
 }
 
 .timezone {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin-left: 0.5rem;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .error-message {
-    padding: 1.5rem;
-    font-size: 0.9rem;
+    text-align: center;
+    color: var(--destructive);
+    padding: 2rem;
+    background: var(--muted);
+    border-radius: var(--radius);
+    border: 1px solid var(--destructive);
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 2rem 1rem;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    .subtitle {
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+    }
+
+    .search-button {
+        padding: 0 1.25rem;
+        font-size: 0.875rem;
+    }
+
+    .flight-card {
+        padding: 1.5rem;
+    }
+
+    .flight-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .flight-number {
+        font-size: 1.125rem;
+    }
+
+    .flight-status {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .route-container {
+        margin-bottom: 1.5rem;
+    }
+
+    .location-code {
+        font-size: 1.75rem;
+    }
+
+    .location-name {
+        font-size: 0.75rem;
+    }
+
+    .route-line {
+        margin: 0 1rem;
+    }
+
+    .time-info {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.25rem;
+    }
+
+    .time-block {
+        text-align: left !important;
+    }
+
+    .time-block h3 {
+        font-size: 0.75rem;
+    }
+
+    .time-value {
+        font-size: 1rem;
+    }
+
+    .timezone {
+        font-size: 0.75rem;
+    }
+
+    .error-message {
+        padding: 1.5rem;
+        font-size: 0.9rem;
+    }
 }
