@@ -101,6 +101,20 @@ This app is deployed on Vercel. To deploy your own instance:
 
 This project is open source and available under the MIT License.
 
+## 📂 GitHub Repository
+
+**Repository**: [https://github.com/shxjxr98/flight-tracker](https://github.com/shxjxr98/flight-tracker)
+
+### Quick Links
+- 🌐 [Live Demo](https://shxjxr-flight-tracker.vercel.app)
+- 📝 [Issues](https://github.com/shxjxr98/flight-tracker/issues)
+- 🔀 [Pull Requests](https://github.com/shxjxr98/flight-tracker/pulls)
+
+### Repository Stats
+![GitHub stars](https://img.shields.io/github/stars/shxjxr98/flight-tracker?style=social)
+![GitHub forks](https://img.shields.io/github/forks/shxjxr98/flight-tracker?style=social)
+![GitHub issues](https://img.shields.io/github/issues/shxjxr98/flight-tracker)
+
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!
