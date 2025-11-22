@@ -290,3 +290,92 @@ h1 {
     border-radius: var(--radius);
     border: 1px solid var(--destructive);
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 640px) {
+    .container {
+        padding: 2rem 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .search-input {
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+    }
+
+    .search-button {
+        padding: 0 1.25rem;
+        font-size: 0.875rem;
+    }
+
+    .flight-card {
+        padding: 1.5rem;
+    }
+
+    .flight-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .flight-number {
+        font-size: 1.25rem;
+    }
+
+    .flight-status {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .route-container {
+        margin-bottom: 1.5rem;
+    }
+
+    .location-code {
+        font-size: 2rem;
+    }
+
+    .location-name {
+        font-size: 0.8rem;
+    }
+
+    .route-line {
+        margin: 0 1rem;
+    }
+
+    .time-info {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.25rem;
+    }
+
+    .time-block {
+        text-align: left !important;
+    }
+
+    .time-block h3 {
+        font-size: 0.75rem;
+    }
+
+    .time-value {
+        font-size: 1.125rem;
+    }
+
+    .timezone {
+        font-size: 0.75rem;
+    }
+
+    .error-message {
+        padding: 1.5rem;
+        font-size: 0.9rem;
+    }
+}
