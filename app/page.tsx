@@ -148,32 +148,6 @@ export default function Home() {
         <main className="container">
             <DarkModeToggle />
 
-            {/* Temperature Unit Toggle */}
-            <button
-                onClick={() => setTempUnit(tempUnit === 'F' ? 'C' : 'F')}
-                className="temp-toggle"
-                aria-label={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
-                title={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
-                style={{
-                    position: 'fixed',
-                    top: 'var(--spacing-2)',
-                    right: 'calc(var(--spacing-2) + 120px)',
-                    zIndex: 1000,
-                    background: 'var(--card)',
-                    border: '2px solid var(--border)',
-                    borderRadius: '2rem',
-                    padding: '0.5rem 1rem',
-                    cursor: 'pointer',
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    color: 'var(--foreground)',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                }}
-            >
-                °{tempUnit}
-            </button>
-
             <div className="header">
                 <h1>FlightTracker</h1>
                 <p className="subtitle">Real-time flight status and details</p>
@@ -299,7 +273,30 @@ export default function Home() {
                         </div>
                         <div className="detail-item">
                             <div className="detail-label">Weather</div>
-                            <div className="detail-value">{mockDetails.weather}</div>
+                            <div className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
+                                {mockDetails.weather}
+                                <button
+                                    onClick={() => setTempUnit(tempUnit === 'F' ? 'C' : 'F')}
+                                    aria-label={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
+                                    title={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
+                                    style={{
+                                        background: 'var(--aa-primary)',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '0.375rem',
+                                        padding: '0.25rem 0.5rem',
+                                        fontSize: '0.75rem',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        transition: 'background 0.2s ease',
+                                        minWidth: '32px',
+                                    }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.background = '#006BC1')}
+                                    onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--aa-primary)')}
+                                >
+                                    °{tempUnit === 'F' ? 'C' : 'F'}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
