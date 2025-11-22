@@ -14,6 +14,7 @@ export default function Home() {
     const [error, setError] = useState('');
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [tempUnit, setTempUnit] = useState<'C' | 'F'>('F');
 
     // Update current time every second for analog clocks
     useEffect(() => {
@@ -126,17 +127,52 @@ export default function Home() {
         return 'status-on-time';
     };
 
+    // Temperature conversion function
+    const convertTemp = (fahrenheit: number, unit: 'C' | 'F') => {
+        if (unit === 'C') {
+            return Math.round((fahrenheit - 32) * 5 / 9);
+        }
+        return fahrenheit;
+    };
+
     // Mock data for details not in API
+    const mockTemp = 52; // Base temperature in Fahrenheit
     const mockDetails = {
         gate: 'B12',
         terminal: '5',
         baggage: 'Carousel 5',
-        weather: '52°F, Cloudy',
+        weather: `${convertTemp(mockTemp, tempUnit)}°${tempUnit}, Cloudy`,
     };
 
     return (
         <main className="container">
             <DarkModeToggle />
+
+            {/* Temperature Unit Toggle */}
+            <button
+                onClick={() => setTempUnit(tempUnit === 'F' ? 'C' : 'F')}
+                className="temp-toggle"
+                aria-label={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
+                title={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
+                style={{
+                    position: 'fixed',
+                    top: 'var(--spacing-2)',
+                    right: 'calc(var(--spacing-2) + 120px)',
+                    zIndex: 1000,
+                    background: 'var(--card)',
+                    border: '2px solid var(--border)',
+                    borderRadius: '2rem',
+                    padding: '0.5rem 1rem',
+                    cursor: 'pointer',
+                    fontSize: '0.875rem',
+                    fontWeight: '600',
+                    color: 'var(--foreground)',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                }}
+            >
+                °{tempUnit}
+            </button>
 
             <div className="header">
                 <h1>FlightTracker</h1>
