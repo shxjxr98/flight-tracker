@@ -270,6 +270,12 @@ h1 {
     margin-left: 0.5rem;
 }
 
+.time-date {
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -317,45 +323,50 @@ h1 {
     }
 
     .flight-card {
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
 
     .flight-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
     }
 
     .flight-number {
-        font-size: 1.125rem;
+        font-size: 1rem;
+        word-wrap: break-word;
     }
 
     .flight-status {
-        padding: 0.375rem 0.75rem;
-        font-size: 0.75rem;
+        padding: 0.3rem 0.65rem;
+        font-size: 0.7rem;
     }
 
     .route-container {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
     }
 
     .location-code {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
     }
 
     .location-name {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
     }
 
     .route-line {
-        margin: 0 1rem;
+        margin: 0 0.75rem;
     }
 
     .time-info {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 1.25rem;
+        gap: 1.25rem;
+        padding: 1rem;
     }
 
     .time-block {
@@ -363,19 +374,27 @@ h1 {
     }
 
     .time-block h3 {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
 
     .time-value {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 
     .timezone {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
+        display: block;
+        margin-left: 0;
+        margin-top: 0.25rem;
+    }
+
+    .time-date {
+        font-size: 0.7rem;
+        margin-top: 0.25rem;
     }
 
     .error-message {
-        padding: 1.5rem;
-        font-size: 0.9rem;
+        padding: 1.25rem;
+        font-size: 0.85rem;
     }
 }

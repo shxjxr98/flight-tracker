@@ -100,17 +100,17 @@ export default function Home() {
                                 {formatTime(flight.startTime)}
                                 <span className="timezone">{flight.timeZone}</span>
                             </div>
-                            <div style={{ color: 'var(--muted-foreground)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
+                            <div className="time-date">
                                 {formatDate(flight.startTime)}
                             </div>
                         </div>
-                        <div className="time-block" style={{ textAlign: 'right' }}>
+                        <div className="time-block">
                             <h3>Arrival</h3>
                             <div className="time-value">
                                 {formatTime(flight.endTime)}
                                 <span className="timezone">{flight.timeZone}</span>
                             </div>
-                            <div style={{ color: 'var(--muted-foreground)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
+                            <div className="time-date">
                                 {formatDate(flight.endTime)}
                             </div>
                         </div>
