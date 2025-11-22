@@ -303,98 +303,69 @@ h1 {
         padding: 2rem 1rem;
     }
 
-    h1 {
-        font-size: 2rem;
-    }
-
-    .subtitle {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
     .search-input {
         padding: 1rem 1.25rem;
-        font-size: 1rem;
     }
 
     .search-button {
         padding: 0 1.25rem;
-        font-size: 0.875rem;
     }
 
     .flight-card {
-        padding: 1.25rem;
+        padding: 1.5rem;
     }
 
     .flight-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.75rem;
-        margin-bottom: 1.25rem;
-        padding-bottom: 0.75rem;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
     }
 
     .flight-number {
-        font-size: 1.25rem;
         word-wrap: break-word;
     }
 
     .flight-status {
         padding: 0.375rem 0.75rem;
-        font-size: 0.75rem;
     }
 
     .route-container {
-        margin-bottom: 1.25rem;
-    }
-
-    .location-code {
-        font-size: 2rem;
+        margin-bottom: 1.5rem;
     }
 
     .location-name {
-        font-size: 0.8rem;
         word-wrap: break-word;
         overflow-wrap: break-word;
         hyphens: auto;
     }
 
     .route-line {
-        margin: 0 0.75rem;
+        margin: 0 1rem;
     }
 
     .time-info {
         grid-template-columns: 1fr;
-        gap: 1.25rem;
-        padding: 1rem;
+        gap: 1.5rem;
+        padding: 1.25rem;
     }
 
     .time-block {
         text-align: left !important;
     }
 
-    .time-block h3 {
-        font-size: 0.75rem;
-    }
-
-    .time-value {
-        font-size: 1.125rem;
-    }
-
     .timezone {
-        font-size: 0.75rem;
         display: block;
         margin-left: 0;
         margin-top: 0.25rem;
     }
 
     .time-date {
-        font-size: 0.75rem;
         margin-top: 0.25rem;
     }
 
     .error-message {
-        padding: 1.25rem;
-        font-size: 0.85rem;
+        padding: 1.5rem;
     }
 }
