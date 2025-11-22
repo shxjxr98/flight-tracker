@@ -82,36 +82,33 @@ export default function Home() {
                     </div>
 
                     <div className="route-container">
-                        <div className="location" style={{ textAlign: 'left' }}>
+                        <div className="location-column">
                             <div className="location-code">{flight.startLocation.split('(')[1].replace(')', '')}</div>
                             <div className="location-name">{flight.startLocation.split('(')[0].trim()}</div>
+                            <div className="time-block">
+                                <h3>Departure</h3>
+                                <div className="time-value">
+                                    {formatTime(flight.startTime)}
+                                </div>
+                                <div className="timezone">{flight.timeZone}</div>
+                                <div className="time-date">
+                                    {formatDate(flight.startTime)}
+                                </div>
+                            </div>
                         </div>
                         <div className="route-line"></div>
-                        <div className="location" style={{ textAlign: 'right' }}>
+                        <div className="location-column" style={{ textAlign: 'right' }}>
                             <div className="location-code">{flight.endLocation.split('(')[1].replace(')', '')}</div>
                             <div className="location-name">{flight.endLocation.split('(')[0].trim()}</div>
-                        </div>
-                    </div>
-
-                    <div className="time-info">
-                        <div className="time-block">
-                            <h3>Departure</h3>
-                            <div className="time-value">
-                                {formatTime(flight.startTime)}
-                                <span className="timezone">{flight.timeZone}</span>
-                            </div>
-                            <div className="time-date">
-                                {formatDate(flight.startTime)}
-                            </div>
-                        </div>
-                        <div className="time-block">
-                            <h3>Arrival</h3>
-                            <div className="time-value">
-                                {formatTime(flight.endTime)}
-                                <span className="timezone">{flight.timeZone}</span>
-                            </div>
-                            <div className="time-date">
-                                {formatDate(flight.endTime)}
+                            <div className="time-block">
+                                <h3>Arrival</h3>
+                                <div className="time-value">
+                                    {formatTime(flight.endTime)}
+                                </div>
+                                <div className="timezone">{flight.timeZone}</div>
+                                <div className="time-date">
+                                    {formatDate(flight.endTime)}
+                                </div>
                             </div>
                         </div>
                     </div>
