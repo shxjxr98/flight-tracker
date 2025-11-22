@@ -323,30 +323,6 @@ h1 {
         word-wrap: break-word;
     }
 
-    .flight-status {
-        padding: 0.375rem 0.75rem;
-    }
-
-    .route-container {
-        flex-direction: column;
-        gap: 2rem;
-    }
-
-    .location-column {
-        width: 100%;
-    }
-
-    .location-name {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        hyphens: auto;
-    }
-
-    .route-line {
-        display: none;
-    }
-
-    .error-message {
-        padding: 1.5rem;
-    }
+    padding: 1.5rem;
+}
 }
