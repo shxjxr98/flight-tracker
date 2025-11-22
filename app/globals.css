@@ -194,9 +194,49 @@ h1 {
     color: oklch(0.8 0.1 85);
 }
 
-margin-top: 1.25rem;
-position: relative;
-flex-shrink: 0;
+.dark .status-cancelled {
+    background: oklch(0.25 0.1 25);
+    color: oklch(0.8 0.1 25);
+}
+
+.route-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.location-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.location-column.align-right {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.location-code {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.location-name {
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.route-line {
+    width: 60px;
+    height: 2px;
+    background: var(--border);
+    margin-top: 1.25rem;
+    position: relative;
+    flex-shrink: 0;
 }
 
 .route-line::after {
@@ -299,6 +339,11 @@ flex-shrink: 0;
 
     .location-column {
         width: 100%;
+    }
+
+    .location-column.align-right {
+        align-items: flex-start;
+        text-align: left;
     }
 
     .location-code {
