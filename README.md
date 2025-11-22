@@ -17,7 +17,7 @@ A modern, real-time flight tracking web application built with Next.js and the A
 
 ## 🚀 Live Demo
 
-Visit the live application: [FlightTracker on Vercel](https://ancient-triangulum.vercel.app)
+Visit the live application: [FlightTracker on Vercel](https://shxjxr98-flight-tracker.vercel.app/)
 
 ## 🛠️ Tech Stack
 
@@ -106,7 +106,7 @@ This project is open source and available under the MIT License.
 **Repository**: [https://github.com/shxjxr98/flight-tracker](https://github.com/shxjxr98/flight-tracker)
 
 ### Quick Links
-- 🌐 [Live Demo](https://ancient-triangulum.vercel.app)
+- 🌐 [Live Demo](https://shxjxr98-flight-tracker.vercel.app/)
 - 📝 [Issues](https://github.com/shxjxr98/flight-tracker/issues)
 - 🔀 [Pull Requests](https://github.com/shxjxr98/flight-tracker/pulls)
 
