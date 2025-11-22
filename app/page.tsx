@@ -5,7 +5,10 @@ import { searchFlights, Flight } from './actions';
 import DarkModeToggle from '../components/DarkModeToggle';
 import ProgressBar from '../components/ProgressBar';
 import AnalogClock from '../components/AnalogClock';
-import FlightMap from '../components/FlightMap';
+import dynamic from 'next/dynamic';
+import WeatherCard from '../components/WeatherCard';
+
+const FlightMap = dynamic(() => import('../components/FlightMap'), { ssr: false });
 
 export default function Home() {
     const [query, setQuery] = useState('');
@@ -206,9 +209,9 @@ export default function Home() {
                     <div className="progress-zone">
                         <ProgressBar progress={getProgress()} status={flight.status.toLowerCase()} />
                         <FlightMap
-                            departure={flight.startLocation.split('(')[1]?.replace(')', '') || 'DEP'}
-                            arrival={flight.endLocation.split('(')[1]?.replace(')', '') || 'ARR'}
-                            progress={getProgress()}
+                            latitude={51.505}
+                            longitude={-0.09}
+                            flightNumber={flight.flightNumber}
                         />
                     </div>
 
@@ -255,6 +258,28 @@ export default function Home() {
                                 {formatDate(flight.endTime)} • {flight.timeZone}
                             </div>
                         </div>
+                    </div>
+
+                    {/* Weather Zone */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <WeatherCard
+                            type="departure"
+                            data={{
+                                city: flight.startLocation.split('(')[0].trim(),
+                                temperature: 18,
+                                condition: 'cloudy',
+                                windSpeed: 12
+                            }}
+                        />
+                        <WeatherCard
+                            type="arrival"
+                            data={{
+                                city: flight.endLocation.split('(')[0].trim(),
+                                temperature: 24,
+                                condition: 'sunny',
+                                windSpeed: 8
+                            }}
+                        />
                     </div>
 
                     {/* Details Zone */}
