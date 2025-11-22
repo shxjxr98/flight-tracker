@@ -97,7 +97,7 @@ export default function Home() {
                             </div>
                         </div>
                         <div className="route-line"></div>
-                        <div className="location-column">
+                        <div className="location-column align-right">
                             <div className="location-code">{flight.endLocation.split('(')[1].replace(')', '')}</div>
                             <div className="location-name">{flight.endLocation.split('(')[0].trim()}</div>
                             <div className="time-block">
