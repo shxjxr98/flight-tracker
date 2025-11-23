@@ -32,7 +32,14 @@ A modern, real-time flight tracking web application built with Next.js and the A
 
 ## 🚀 Live Demo
 
-Visit the live application: [FlightTracker on Vercel](https://shxjxr98-flight-tracker.vercel.app/)
+> **Note**: This is currently a prototype for testing. Full deployment to Vercel coming soon!
+
+For now, you can run the project locally:
+```bash
+npm install
+npm run dev
+```
+Visit [http://localhost:3000](http://localhost:3000) to see the app in action.
 
 ## 🛠️ Tech Stack
 
