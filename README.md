@@ -15,6 +15,7 @@ A modern, real-time flight tracking web application built with Next.js and the A
 - **Auto-Refresh**: Polls for updates every 30 seconds to keep data fresh
 
 ### User Experience
+- **Boarding Pass UI**: Realistic digital boarding pass design with notches and dashed lines
 - **Skeleton Shimmer**: Smooth loading states for better perceived performance
 - **Haptic Feedback**: Tactile vibration on mobile interactions (buttons, toggles, success/error states)
 - **Dark Mode**: Persisted theme preference with smooth transitions
