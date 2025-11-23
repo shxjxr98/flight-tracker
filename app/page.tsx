@@ -211,8 +211,8 @@ export default function Home() {
                     className="search-button"
                     disabled={loading}
                     aria-label="Search for flight"
-                    whileHover={{ scale: 1.02, boxShadow: "0px 4px 12px rgba(0, 120, 210, 0.4)" }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
                     {loading ? 'Searching...' : 'Track Flight'}
                 </motion.button>
