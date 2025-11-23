@@ -32,7 +32,7 @@ A modern, real-time flight tracking web application built with Next.js and the A
 
 ## 🚀 Live Demo
 
-**Now deployed on Vercel!** Visit the live application: [FlightTracker on Vercel](https://shxjxr98-flight-tracker.vercel.app/)
+**Now deployed on Vercel!** Visit the live application: [FlightTracker on Vercel](https://shxjxr-flight-tracker.vercel.app/)
 
 > **Note**: Currently running in **mock data mode** for demonstration purposes. The app includes 5 test flights you can search for.
 
@@ -111,7 +111,7 @@ flight-tracker/
 
 ## 🚢 Deployment
 
-**Already deployed!** Visit [shxjxr98-flight-tracker.vercel.app](https://shxjxr98-flight-tracker.vercel.app/)
+**Already deployed!** Visit [shxjxr-flight-tracker.vercel.app](https://shxjxr-flight-tracker.vercel.app/)
 
 To deploy your own instance:
 
