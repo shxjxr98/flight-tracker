@@ -16,7 +16,6 @@ A modern, real-time flight tracking web application built with Next.js and the A
 
 ### User Experience
 - **Skeleton Shimmer**: Smooth loading states for better perceived performance
-- **Immersive Interactions**: Staggered entry animations, smooth transitions, and tactile micro-interactions
 - **Haptic Feedback**: Tactile vibration on mobile interactions (buttons, toggles, success/error states)
 - **Dark Mode**: Persisted theme preference with smooth transitions
 - **Temperature Toggle**: Switch between Celsius and Fahrenheit

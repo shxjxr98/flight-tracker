@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { searchFlights, Flight } from './actions';
 import DarkModeToggle from '../components/DarkModeToggle';
 import ProgressBar from '../components/ProgressBar';
@@ -12,31 +11,6 @@ import SkeletonLoader from '../components/SkeletonLoader';
 import { triggerHaptic } from '../utils/haptic';
 
 const FlightMap = dynamic(() => import('../components/FlightMap'), { ssr: false });
-
-// Animation Variants
-const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0.2
-        }
-    }
-};
-
-const itemVariants: Variants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-        y: 0,
-        opacity: 1,
-        transition: {
-            type: "spring",
-            stiffness: 100,
-            damping: 10
-        }
-    }
-};
 
 export default function Home() {
     const [query, setQuery] = useState('');
@@ -180,24 +154,15 @@ export default function Home() {
     };
 
     return (
-        <motion.main
-            className="container"
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-        >
+        <main className="container">
             <DarkModeToggle />
 
-            <motion.div className="header" variants={itemVariants}>
+            <div className="header">
                 <h1>FlightTracker</h1>
                 <p className="subtitle">Real-time flight status and details</p>
-            </motion.div>
+            </div>
 
-            <motion.form
-                onSubmit={handleSearch}
-                className="search-container"
-                variants={itemVariants}
-            >
+            <form onSubmit={handleSearch} className="search-container">
                 <input
                     type="text"
                     value={query}
@@ -206,294 +171,261 @@ export default function Home() {
                     className="search-input"
                     aria-label="Flight number search"
                 />
-                <motion.button
+                <button
                     type="submit"
                     className="search-button"
                     disabled={loading}
                     aria-label="Search for flight"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                 >
                     {loading ? 'Searching...' : 'Track Flight'}
-                </motion.button>
-            </motion.form>
+                </button>
+            </form>
 
-            <AnimatePresence mode="wait">
-                {loading && (
-                    <motion.div
-                        key="loading"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="flight-card"
-                        role="status"
-                        aria-label="Loading flight data"
-                    >
-                        {/* Hero Zone Skeleton */}
-                        <div className="hero-zone">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                    <SkeletonLoader width="120px" height="24px" />
-                                    <SkeletonLoader width="200px" height="40px" />
-                                </div>
-                                <SkeletonLoader width="100px" height="32px" borderRadius="2rem" />
+            {loading && (
+                <div className="flight-card" role="status" aria-label="Loading flight data">
+                    {/* Hero Zone Skeleton */}
+                    <div className="hero-zone">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                <SkeletonLoader width="120px" height="24px" />
+                                <SkeletonLoader width="200px" height="40px" />
                             </div>
-                            <SkeletonLoader width="180px" height="20px" />
+                            <SkeletonLoader width="100px" height="32px" borderRadius="2rem" />
                         </div>
+                        <SkeletonLoader width="180px" height="20px" />
+                    </div>
 
-                        {/* Progress Zone Skeleton */}
-                        <div className="progress-zone">
-                            <SkeletonLoader height="12px" borderRadius="6px" style={{ marginBottom: '2rem' }} />
-                            <SkeletonLoader height="150px" borderRadius="1rem" />
+                    {/* Progress Zone Skeleton */}
+                    <div className="progress-zone">
+                        <SkeletonLoader height="12px" borderRadius="6px" style={{ marginBottom: '2rem' }} />
+                        <SkeletonLoader height="150px" borderRadius="1rem" />
+                    </div>
+
+                    {/* Time Zone Skeleton */}
+                    <div className="time-zone">
+                        <div className="time-card">
+                            <SkeletonLoader width="80px" height="20px" style={{ marginBottom: '1rem' }} />
+                            <SkeletonLoader width="60px" height="40px" style={{ marginBottom: '0.5rem' }} />
+                            <SkeletonLoader width="140px" height="24px" style={{ marginBottom: '1rem' }} />
+                            <SkeletonLoader height="150px" borderRadius="50%" width="150px" style={{ margin: '0 auto 1rem' }} />
+                            <SkeletonLoader width="100px" height="32px" style={{ margin: '0 auto' }} />
                         </div>
+                        <div className="time-card">
+                            <SkeletonLoader width="80px" height="20px" style={{ marginBottom: '1rem' }} />
+                            <SkeletonLoader width="60px" height="40px" style={{ marginBottom: '0.5rem' }} />
+                            <SkeletonLoader width="140px" height="24px" style={{ marginBottom: '1rem' }} />
+                            <SkeletonLoader height="150px" borderRadius="50%" width="150px" style={{ margin: '0 auto 1rem' }} />
+                            <SkeletonLoader width="100px" height="32px" style={{ margin: '0 auto' }} />
+                        </div>
+                    </div>
 
-                        {/* Time Zone Skeleton */}
-                        <div className="time-zone">
-                            <div className="time-card">
-                                <SkeletonLoader width="80px" height="20px" style={{ marginBottom: '1rem' }} />
-                                <SkeletonLoader width="60px" height="40px" style={{ marginBottom: '0.5rem' }} />
-                                <SkeletonLoader width="140px" height="24px" style={{ marginBottom: '1rem' }} />
-                                <SkeletonLoader height="150px" borderRadius="50%" width="150px" style={{ margin: '0 auto 1rem' }} />
-                                <SkeletonLoader width="100px" height="32px" style={{ margin: '0 auto' }} />
+                    {/* Details Zone Skeleton */}
+                    <div className="details-zone">
+                        {[1, 2, 3, 4].map((i) => (
+                            <div key={i} className="detail-item">
+                                <SkeletonLoader width="60px" height="16px" style={{ marginBottom: '0.5rem' }} />
+                                <SkeletonLoader width="100px" height="24px" />
                             </div>
-                            <div className="time-card">
-                                <SkeletonLoader width="80px" height="20px" style={{ marginBottom: '1rem' }} />
-                                <SkeletonLoader width="60px" height="40px" style={{ marginBottom: '0.5rem' }} />
-                                <SkeletonLoader width="140px" height="24px" style={{ marginBottom: '1rem' }} />
-                                <SkeletonLoader height="150px" borderRadius="50%" width="150px" style={{ margin: '0 auto 1rem' }} />
-                                <SkeletonLoader width="100px" height="32px" style={{ margin: '0 auto' }} />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {error && (
+                <div className="error-message" role="alert">
+                    {error}
+                </div>
+            )}
+
+            {flight && (
+                <div className="flight-card" role="region" aria-label="Flight information">
+                    {/* Hero Zone */}
+                    <div className="hero-zone">
+                        <div className="flight-info">
+                            <div className="airline-logo" aria-label="Airline logo">
+                                AA
                             </div>
-                        </div>
-
-                        {/* Details Zone Skeleton */}
-                        <div className="details-zone">
-                            {[1, 2, 3, 4].map((i) => (
-                                <div key={i} className="detail-item">
-                                    <SkeletonLoader width="60px" height="16px" style={{ marginBottom: '0.5rem' }} />
-                                    <SkeletonLoader width="100px" height="24px" />
+                            <div>
+                                <div className="flight-number">
+                                    {flight.airline} {flight.flightNumber}
                                 </div>
-                            ))}
-                        </div>
-                    </motion.div>
-                )}
-
-                {error && (
-                    <motion.div
-                        key="error"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        className="error-message"
-                        role="alert"
-                    >
-                        {error}
-                    </motion.div>
-                )}
-
-                {flight && (
-                    <motion.div
-                        key="flight"
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 50 }}
-                        transition={{ type: "spring", stiffness: 100, damping: 15 }}
-                        className="flight-card"
-                        role="region"
-                        aria-label="Flight information"
-                    >
-                        {/* Hero Zone */}
-                        <div className="hero-zone">
-                            <div className="flight-info">
-                                <div className="airline-logo" aria-label="Airline logo">
-                                    AA
-                                </div>
-                                <div>
-                                    <div className="flight-number">
-                                        {flight.airline} {flight.flightNumber}
+                                {getMicroCopy() && (
+                                    <div style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
+                                        {getMicroCopy()}
                                     </div>
-                                    {getMicroCopy() && (
-                                        <div style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
-                                            {getMicroCopy()}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                            <div className={`status-badge ${getStatusClass()}`} role="status" aria-live="polite">
-                                {flight.status}
+                                )}
                             </div>
                         </div>
+                        <div className={`status-badge ${getStatusClass()}`} role="status" aria-live="polite">
+                            {flight.status}
+                        </div>
+                    </div>
 
-                        {/* Progress Zone */}
-                        <div className="progress-zone">
-                            <ProgressBar progress={getProgress()} status={flight.status.toLowerCase()} />
-                            <FlightMap
-                                latitude={51.505}
-                                longitude={-0.09}
-                                flightNumber={flight.flightNumber}
+                    {/* Progress Zone */}
+                    <div className="progress-zone">
+                        <ProgressBar progress={getProgress()} status={flight.status.toLowerCase()} />
+                        <FlightMap
+                            latitude={51.505}
+                            longitude={-0.09}
+                            flightNumber={flight.flightNumber}
+                        />
+                    </div>
+
+                    {/* Time Zone */}
+                    <div className="time-zone">
+                        {/* Departure */}
+                        <div className="time-card">
+                            <div className="time-label">Departure</div>
+                            <div className="airport-code">
+                                {flight.startLocation.split('(')[1]?.replace(')', '')}
+                            </div>
+                            <div className="airport-name">
+                                {flight.startLocation.split('(')[0].trim()}
+                            </div>
+                            <AnalogClock
+                                time={new Date(flight.startTime)}
+                                label="Local Time"
                             />
-                        </div>
-
-                        {/* Time Zone */}
-                        <div className="time-zone">
-                            {/* Departure */}
-                            <div className="time-card">
-                                <div className="time-label">Departure</div>
-                                <div className="airport-code">
-                                    {flight.startLocation.split('(')[1]?.replace(')', '')}
-                                </div>
-                                <div className="airport-name">
-                                    {flight.startLocation.split('(')[0].trim()}
-                                </div>
-                                <AnalogClock
-                                    time={new Date(flight.startTime)}
-                                    label="Local Time"
-                                />
-                                <div className="digital-time">
-                                    {formatTime(flight.startTime)}
-                                </div>
-                                <div className="timezone-label">
-                                    {formatDate(flight.startTime)} • {flight.timeZone}
-                                </div>
+                            <div className="digital-time">
+                                {formatTime(flight.startTime)}
                             </div>
-
-                            {/* Arrival */}
-                            <div className="time-card">
-                                <div className="time-label">Arrival</div>
-                                <div className="airport-code">
-                                    {flight.endLocation.split('(')[1]?.replace(')', '')}
-                                </div>
-                                <div className="airport-name">
-                                    {flight.endLocation.split('(')[0].trim()}
-                                </div>
-                                <AnalogClock
-                                    time={new Date(flight.endTime)}
-                                    label="Local Time"
-                                />
-                                <div className="digital-time">
-                                    {formatTime(flight.endTime)}
-                                </div>
-                                <div className="timezone-label">
-                                    {formatDate(flight.endTime)} • {flight.timeZone}
-                                </div>
+                            <div className="timezone-label">
+                                {formatDate(flight.startTime)} • {flight.timeZone}
                             </div>
                         </div>
 
-                        {/* Details Zone */}
-                        <div className="details-zone">
-                            <div className="detail-item">
-                                <div className="detail-label">Gate</div>
-                                <div className="detail-value">{mockDetails.gate}</div>
+                        {/* Arrival */}
+                        <div className="time-card">
+                            <div className="time-label">Arrival</div>
+                            <div className="airport-code">
+                                {flight.endLocation.split('(')[1]?.replace(')', '')}
                             </div>
-                            <div className="detail-item">
-                                <div className="detail-label">Terminal</div>
-                                <div className="detail-value">{mockDetails.terminal}</div>
+                            <div className="airport-name">
+                                {flight.endLocation.split('(')[0].trim()}
                             </div>
-                            <div className="detail-item">
-                                <div className="detail-label">Baggage</div>
-                                <div className="detail-value">{mockDetails.baggage}</div>
+                            <AnalogClock
+                                time={new Date(flight.endTime)}
+                                label="Local Time"
+                            />
+                            <div className="digital-time">
+                                {formatTime(flight.endTime)}
                             </div>
-                            <div className="detail-item">
-                                <div className="detail-label">Weather</div>
-                                <div className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
-                                    {mockDetails.weather}
-                                    <motion.button
-                                        onClick={() => {
-                                            setTempUnit(tempUnit === 'F' ? 'C' : 'F');
-                                            triggerHaptic('light');
-                                        }}
-                                        aria-label={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
-                                        title={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
-                                        style={{
-                                            background: 'var(--aa-primary)',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '0.375rem',
-                                            padding: '0.25rem 0.5rem',
-                                            fontSize: '0.75rem',
-                                            fontWeight: '600',
-                                            cursor: 'pointer',
-                                            minWidth: '32px',
-                                        }}
-                                        whileHover={{ scale: 1.1, backgroundColor: '#006BC1' }}
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        °{tempUnit === 'F' ? 'C' : 'F'}
-                                    </motion.button>
-                                </div>
+                            <div className="timezone-label">
+                                {formatDate(flight.endTime)} • {flight.timeZone}
                             </div>
                         </div>
+                    </div>
 
-                        {/* Action Zone */}
-                        <div className="action-zone">
-                            <motion.button
-                                className="action-button"
-                                aria-label="Get flight alerts"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => {
-                                    triggerHaptic('light');
-                                    const email = prompt('Enter your email address to receive flight alerts:');
-                                    if (email && email.includes('@')) {
+                    {/* Details Zone */}
+                    <div className="details-zone">
+                        <div className="detail-item">
+                            <div className="detail-label">Gate</div>
+                            <div className="detail-value">{mockDetails.gate}</div>
+                        </div>
+                        <div className="detail-item">
+                            <div className="detail-label">Terminal</div>
+                            <div className="detail-value">{mockDetails.terminal}</div>
+                        </div>
+                        <div className="detail-item">
+                            <div className="detail-label">Baggage</div>
+                            <div className="detail-value">{mockDetails.baggage}</div>
+                        </div>
+                        <div className="detail-item">
+                            <div className="detail-label">Weather</div>
+                            <div className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
+                                {mockDetails.weather}
+                                <button
+                                    onClick={() => {
+                                        setTempUnit(tempUnit === 'F' ? 'C' : 'F');
+                                        triggerHaptic('light');
+                                    }}
+                                    aria-label={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
+                                    title={`Switch to ${tempUnit === 'F' ? 'Celsius' : 'Fahrenheit'}`}
+                                    style={{
+                                        background: 'var(--aa-primary)',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '0.375rem',
+                                        padding: '0.25rem 0.5rem',
+                                        fontSize: '0.75rem',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        transition: 'background 0.2s ease',
+                                        minWidth: '32px',
+                                    }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.background = '#006BC1')}
+                                    onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--aa-primary)')}
+                                >
+                                    °{tempUnit === 'F' ? 'C' : 'F'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Action Zone */}
+                    <div className="action-zone">
+                        <button
+                            className="action-button"
+                            aria-label="Get flight alerts"
+                            onClick={() => {
+                                triggerHaptic('light');
+                                const email = prompt('Enter your email address to receive flight alerts:');
+                                if (email && email.includes('@')) {
+                                    triggerHaptic('success');
+                                    alert(`✅ Alerts enabled for ${email}\n\nYou'll receive notifications about:\n• Gate changes\n• Delays\n• Boarding calls\n• Baggage carousel updates`);
+                                } else if (email) {
+                                    triggerHaptic('warning');
+                                    alert('❌ Please enter a valid email address');
+                                }
+                            }}
+                        >
+                            🔔 Get Alerts
+                        </button>
+                        <button
+                            className="action-button secondary"
+                            aria-label="Share flight"
+                            onClick={async () => {
+                                triggerHaptic('light');
+                                const shareData = {
+                                    title: `Flight ${flight.airline} ${flight.flightNumber}`,
+                                    text: `${flight.airline} ${flight.flightNumber} - ${flight.status}\nDeparture: ${flight.startLocation} at ${formatTime(flight.startTime)}\nArrival: ${flight.endLocation} at ${formatTime(flight.endTime)}`,
+                                    url: window.location.href
+                                };
+
+                                if (navigator.share) {
+                                    try {
+                                        await navigator.share(shareData);
                                         triggerHaptic('success');
-                                        alert(`✅ Alerts enabled for ${email}\n\nYou'll receive notifications about:\n• Gate changes\n• Delays\n• Boarding calls\n• Baggage carousel updates`);
-                                    } else if (email) {
-                                        triggerHaptic('warning');
-                                        alert('❌ Please enter a valid email address');
-                                    }
-                                }}
-                            >
-                                🔔 Get Alerts
-                            </motion.button>
-                            <motion.button
-                                className="action-button secondary"
-                                aria-label="Share flight"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={async () => {
-                                    triggerHaptic('light');
-                                    const shareData = {
-                                        title: `Flight ${flight.airline} ${flight.flightNumber}`,
-                                        text: `${flight.airline} ${flight.flightNumber} - ${flight.status}\nDeparture: ${flight.startLocation} at ${formatTime(flight.startTime)}\nArrival: ${flight.endLocation} at ${formatTime(flight.endTime)}`,
-                                        url: window.location.href
-                                    };
-
-                                    if (navigator.share) {
-                                        try {
-                                            await navigator.share(shareData);
-                                            triggerHaptic('success');
-                                        } catch (err) {
-                                            if ((err as Error).name !== 'AbortError') {
-                                                console.error('Share failed:', err);
-                                                triggerHaptic('error');
-                                            }
+                                    } catch (err) {
+                                        if ((err as Error).name !== 'AbortError') {
+                                            console.error('Share failed:', err);
+                                            triggerHaptic('error');
                                         }
-                                    } else {
-                                        // Fallback: copy to clipboard
-                                        navigator.clipboard.writeText(shareData.text);
-                                        triggerHaptic('success');
-                                        alert('✅ Flight details copied to clipboard!');
                                     }
-                                }}
-                            >
-                                📤 Share Flight
-                            </motion.button>
-                            <motion.button
-                                className="action-button secondary"
-                                aria-label="Add to calendar"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => {
-                                    triggerHaptic('light');
-                                    // Create .ics file for calendar
-                                    const depDate = new Date(flight.startTime);
-                                    const arrDate = new Date(flight.endTime);
+                                } else {
+                                    // Fallback: copy to clipboard
+                                    navigator.clipboard.writeText(shareData.text);
+                                    triggerHaptic('success');
+                                    alert('✅ Flight details copied to clipboard!');
+                                }
+                            }}
+                        >
+                            📤 Share Flight
+                        </button>
+                        <button
+                            className="action-button secondary"
+                            aria-label="Add to calendar"
+                            onClick={() => {
+                                triggerHaptic('light');
+                                // Create .ics file for calendar
+                                const depDate = new Date(flight.startTime);
+                                const arrDate = new Date(flight.endTime);
 
-                                    const formatICSDate = (date: Date) => {
-                                        return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-                                    };
+                                const formatICSDate = (date: Date) => {
+                                    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+                                };
 
-                                    const icsContent = `BEGIN:VCALENDAR
+                                const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//FlightTracker//EN
 BEGIN:VEVENT
@@ -514,81 +446,75 @@ END:VALARM
 END:VEVENT
 END:VCALENDAR`;
 
-                                    const blob = new Blob([icsContent], { type: 'text/calendar' });
-                                    const url = URL.createObjectURL(blob);
-                                    const link = document.createElement('a');
-                                    link.href = url;
-                                    link.download = `flight-${flight.flightNumber}.ics`;
-                                    document.body.appendChild(link);
-                                    link.click();
-                                    document.body.removeChild(link);
-                                    URL.revokeObjectURL(url);
+                                const blob = new Blob([icsContent], { type: 'text/calendar' });
+                                const url = URL.createObjectURL(blob);
+                                const link = document.createElement('a');
+                                link.href = url;
+                                link.download = `flight-${flight.flightNumber}.ics`;
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                                URL.revokeObjectURL(url);
 
-                                    alert('✅ Calendar event downloaded! Open the .ics file to add to your calendar.');
-                                }}
-                            >
-                                📅 Add to Calendar
-                            </motion.button>
-                            <motion.button
-                                className="action-button secondary"
-                                aria-label="View terminal map"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => {
-                                    triggerHaptic('light');
-                                    // Extract airport code
-                                    const airportCode = flight.startLocation.split('(')[1]?.replace(')', '');
-                                    const terminal = mockDetails.terminal;
-                                    const gate = mockDetails.gate;
+                                alert('✅ Calendar event downloaded! Open the .ics file to add to your calendar.');
+                            }}
+                        >
+                            📅 Add to Calendar
+                        </button>
+                        <button
+                            className="action-button secondary"
+                            aria-label="View terminal map"
+                            onClick={() => {
+                                triggerHaptic('light');
+                                // Extract airport code
+                                const airportCode = flight.startLocation.split('(')[1]?.replace(')', '');
+                                const terminal = mockDetails.terminal;
+                                const gate = mockDetails.gate;
 
-                                    // Open Google Maps with airport search
-                                    const searchQuery = `${airportCode} airport terminal ${terminal} gate ${gate}`;
-                                    const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
-                                    window.open(mapsUrl, '_blank', 'noopener,noreferrer');
-                                }}
-                            >
-                                🗺️ Terminal Map
-                            </motion.button>
+                                // Open Google Maps with airport search
+                                const searchQuery = `${airportCode} airport terminal ${terminal} gate ${gate}`;
+                                const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
+                                window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+                            }}
+                        >
+                            🗺️ Terminal Map
+                        </button>
+                    </div>
+
+                    {/* Status Bar */}
+                    <div className="status-bar">
+                        <div className="last-updated">
+                            <span>Last updated:</span>
+                            <span style={{ fontWeight: '600', marginLeft: '0.25rem' }}>
+                                {lastUpdated?.toLocaleTimeString('en-US', {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                })}
+                            </span>
                         </div>
+                        <button
+                            className="refresh-button"
+                            onClick={() => {
+                                handleRefresh();
+                                triggerHaptic('medium');
+                            }}
+                            aria-label="Refresh flight data"
+                            title="Refresh flight data"
+                        >
+                            🔄 Refresh
+                        </button>
+                    </div>
 
-                        {/* Status Bar */}
-                        <div className="status-bar">
-                            <div className="last-updated">
-                                <span>Last updated:</span>
-                                <span style={{ fontWeight: '600', marginLeft: '0.25rem' }}>
-                                    {lastUpdated?.toLocaleTimeString('en-US', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    })}
-                                </span>
-                            </div>
-                            <motion.button
-                                className="refresh-button"
-                                onClick={() => {
-                                    handleRefresh();
-                                    triggerHaptic('medium');
-                                }}
-                                aria-label="Refresh flight data"
-                                title="Refresh flight data"
-                                whileHover={{ scale: 1.1, rotate: 180 }}
-                                transition={{ duration: 0.3 }}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                🔄 Refresh
-                            </motion.button>
-                        </div>
-
-                        {/* Screen reader announcement */}
-                        <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-                            Flight {flight.airline} {flight.flightNumber}, {flight.status},
-                            departs {flight.startLocation.split('(')[1]?.replace(')', '')}
-                            {formatTime(flight.startTime)} local time,
-                            arrives {flight.endLocation.split('(')[1]?.replace(')', '')}
-                            {formatTime(flight.endTime)} local time.
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </motion.main>
+                    {/* Screen reader announcement */}
+                    <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+                        Flight {flight.airline} {flight.flightNumber}, {flight.status},
+                        departs {flight.startLocation.split('(')[1]?.replace(')', '')}
+                        {formatTime(flight.startTime)} local time,
+                        arrives {flight.endLocation.split('(')[1]?.replace(')', '')}
+                        {formatTime(flight.endTime)} local time.
+                    </div>
+                </div>
+            )}
+        </main>
     );
 }
