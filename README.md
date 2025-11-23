@@ -15,12 +15,11 @@ A modern, real-time flight tracking web application built with Next.js and the A
 - **Auto-Refresh**: Polls for updates every 30 seconds to keep data fresh
 
 ### User Experience
-- **Boarding Pass UI**: Realistic digital boarding pass design with notches and dashed lines
+- **Modern Flight Card**: Clean, minimal card design with status bar, large time displays, and bottom info icons
 - **Skeleton Shimmer**: Smooth loading states for better perceived performance
 - **Haptic Feedback**: Tactile vibration on mobile interactions (buttons, toggles, success/error states)
 - **Dark Mode**: Persisted theme preference with smooth transitions
-- **Temperature Toggle**: Switch between Celsius and Fahrenheit
-- **Responsive Design**: Glass-morphism UI optimized for all device sizes
+- **Responsive Design**: Optimized for all device sizes with mobile-first approach
 
 ### Interactive Tools
 - **Flight Map**: Visual route visualization
@@ -90,6 +89,7 @@ flight-tracker/
 │   └── page.tsx            # Main application logic
 ├── components/
 │   ├── AnalogClock.tsx     # Real-time analog clock
+│   ├── BoardingPass.tsx    # Modern flight card component
 │   ├── DarkModeToggle.tsx  # Theme switcher
 │   ├── FlightMap.tsx       # Route visualization
 │   ├── ProgressBar.tsx     # Flight progress indicator
