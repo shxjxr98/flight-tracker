@@ -32,14 +32,16 @@ A modern, real-time flight tracking web application built with Next.js and the A
 
 ## 🚀 Live Demo
 
-> **Note**: This is currently a prototype for testing. Full deployment to Vercel coming soon!
+**Now deployed on Vercel!** Visit the live application: [FlightTracker on Vercel](https://shxjxr98-flight-tracker.vercel.app/)
 
-For now, you can run the project locally:
-```bash
-npm install
-npm run dev
-```
-Visit [http://localhost:3000](http://localhost:3000) to see the app in action.
+> **Note**: Currently running in **mock data mode** for demonstration purposes. The app includes 5 test flights you can search for.
+
+### Try These Mock Flights:
+- `AA100` - On Time (JFK → LAX)
+- `BA11` - Boarding (LHR → SIN)
+- `DL123` - Delayed (ATL → MIA)
+- `UA456` - Landed (SFO → NRT)
+- `EK202` - On Time (DXB → JFK)
 
 ## 🛠️ Tech Stack
 
@@ -62,10 +64,11 @@ cd flight-tracker
 npm install
 ```
 
-3. Create a `.env.local` file and add your AviationStack API key:
+3. **(Optional)** Create a `.env.local` file and add your AviationStack API key:
 ```env
 AVIATIONSTACK_API_KEY=your_api_key_here
 ```
+**Note**: The app works perfectly without an API key using built-in mock data!
 
 4. Run the development server:
 ```bash
@@ -108,12 +111,16 @@ flight-tracker/
 
 ## 🚢 Deployment
 
-This app is deployed on Vercel. To deploy your own instance:
+**Already deployed!** Visit [shxjxr98-flight-tracker.vercel.app](https://shxjxr98-flight-tracker.vercel.app/)
+
+To deploy your own instance:
 
 1. Push your code to GitHub
 2. Import the project in [Vercel](https://vercel.com)
-3. Add the `AVIATIONSTACK_API_KEY` environment variable
+3. **(Optional)** Add the `AVIATIONSTACK_API_KEY` environment variable for real data
 4. Deploy!
+
+The app automatically uses mock data if no API key is provided.
 
 ## 📄 License
 
