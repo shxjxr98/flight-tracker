@@ -1,6 +1,6 @@
 # ✈️ FlightTracker
 
-A modern, real-time flight tracking web application built with Next.js and the AviationStack API.
+A modern, real-time flight tracking web application built with Next.js and the AviationStack API. Now featuring a robust mock data fallback system for reliable testing.
 
 ![FlightTracker Screenshot](https://img.shields.io/badge/Next.js-16.0.3-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
@@ -8,12 +8,27 @@ A modern, real-time flight tracking web application built with Next.js and the A
 
 ## 🌟 Features
 
+### Core Functionality
 - **Real-time Flight Data**: Search for any flight by flight number (e.g., BA11, AA100)
-- **Live Status Updates**: Get current flight status (On Time, Delayed, Cancelled)
-- **Route Information**: View departure and arrival airports with IATA codes
-- **Flight Schedule**: See departure and arrival times with timezone information
-- **Responsive Design**: Fully optimized for mobile and desktop devices
-- **Dark Mode**: Beautiful dark theme for comfortable viewing
+- **Smart Mock Data Fallback**: Automatically switches to mock data if API rate limits are reached
+- **Live Status Updates**: Visual indicators for On Time, Delayed, Boarding, and Landed states
+- **Auto-Refresh**: Polls for updates every 30 seconds to keep data fresh
+
+### User Experience
+- **Skeleton Shimmer**: Smooth loading states for better perceived performance
+- **Haptic Feedback**: Tactile vibration on mobile interactions (buttons, toggles, success/error states)
+- **Dark Mode**: Persisted theme preference with smooth transitions
+- **Temperature Toggle**: Switch between Celsius and Fahrenheit
+- **Responsive Design**: Glass-morphism UI optimized for all device sizes
+
+### Interactive Tools
+- **Flight Map**: Visual route visualization
+- **Analog & Digital Clocks**: Dual time zone displays for departure and arrival
+- **Action Buttons**:
+  - 🔔 **Get Alerts**: Subscribe to flight updates
+  - 📤 **Share Flight**: Native share sheet integration with clipboard fallback
+  - 📅 **Add to Calendar**: Download .ics file for your schedule
+  - 🗺️ **Terminal Map**: Direct link to Google Maps for terminal/gate navigation
 
 ## 🚀 Live Demo
 
@@ -23,8 +38,8 @@ Visit the live application: [FlightTracker on Vercel](https://shxjxr98-flight-tr
 
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
 - **Language**: TypeScript
-- **Styling**: Vanilla CSS with custom design system
-- **API**: [AviationStack](https://aviationstack.com/) for real-time flight data
+- **Styling**: Vanilla CSS with custom design system (Variables, Glass-morphism)
+- **API**: [AviationStack](https://aviationstack.com/) + Custom Mock Data Layer
 - **Deployment**: Vercel
 
 ## 📦 Installation
@@ -52,40 +67,35 @@ npm run dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## 🔑 Getting an API Key
+## 🧪 Mock Data Mode
 
-1. Sign up for a free account at [AviationStack](https://aviationstack.com/)
-2. Navigate to your dashboard to get your API key
-3. Add the key to your `.env.local` file
+The app includes a built-in mock data system for development when API limits are reached.
 
-## 📱 Usage
-
-1. Enter a flight number in the search box (e.g., `BA11`, `AA100`, `LH400`)
-2. Click "Track Flight" or press Enter
-3. View real-time flight information including:
-   - Airline and flight number
-   - Current status
-   - Departure and arrival airports
-   - Scheduled times
-
-## 🎨 Design Features
-
-- **Modern UI**: Clean, minimalist interface with smooth animations
-- **Mobile-First**: Optimized font sizes and layouts for mobile devices
-- **Accessibility**: Semantic HTML and proper ARIA labels
-- **Performance**: Optimized build with Next.js static generation
+**Available Test Flights:**
+- `AA100`: On Time (JFK → LAX)
+- `BA11`: Boarding (LHR → SIN)
+- `DL123`: Delayed (ATL → MIA)
+- `UA456`: Landed (SFO → NRT)
+- `EK202`: On Time (DXB → JFK)
 
 ## 🏗️ Project Structure
 
 ```
 flight-tracker/
 ├── app/
-│   ├── actions.ts          # Server actions for API calls
-│   ├── globals.css         # Global styles and responsive design
-│   ├── layout.tsx          # Root layout with metadata
-│   └── page.tsx            # Main flight search page
-├── public/                 # Static assets
-└── .env.local             # Environment variables (not in repo)
+│   ├── actions.ts          # Server actions with API/Mock logic
+│   ├── globals.css         # Global styles, themes, and animations
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx            # Main application logic
+├── components/
+│   ├── AnalogClock.tsx     # Real-time analog clock
+│   ├── DarkModeToggle.tsx  # Theme switcher
+│   ├── FlightMap.tsx       # Route visualization
+│   ├── ProgressBar.tsx     # Flight progress indicator
+│   └── SkeletonLoader.tsx  # Loading state component
+├── utils/
+│   └── haptic.ts           # Haptic feedback utility
+└── public/                 # Static assets
 ```
 
 ## 🚢 Deployment
@@ -100,20 +110,6 @@ This app is deployed on Vercel. To deploy your own instance:
 ## 📄 License
 
 This project is open source and available under the MIT License.
-
-## 📂 GitHub Repository
-
-**Repository**: [https://github.com/shxjxr98/flight-tracker](https://github.com/shxjxr98/flight-tracker)
-
-### Quick Links
-- 🌐 [Live Demo](https://shxjxr98-flight-tracker.vercel.app/)
-- 📝 [Issues](https://github.com/shxjxr98/flight-tracker/issues)
-- 🔀 [Pull Requests](https://github.com/shxjxr98/flight-tracker/pulls)
-
-### Repository Stats
-![GitHub stars](https://img.shields.io/github/stars/shxjxr98/flight-tracker?style=social)
-![GitHub forks](https://img.shields.io/github/forks/shxjxr98/flight-tracker?style=social)
-![GitHub issues](https://img.shields.io/github/issues/shxjxr98/flight-tracker)
 
 ## 🤝 Contributing
 
