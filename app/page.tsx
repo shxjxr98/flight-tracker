@@ -6,7 +6,7 @@ import DarkModeToggle from '../components/DarkModeToggle';
 import ProgressBar from '../components/ProgressBar';
 import AnalogClock from '../components/AnalogClock';
 import dynamic from 'next/dynamic';
-import WeatherCard from '../components/WeatherCard';
+
 import SkeletonLoader from '../components/SkeletonLoader';
 import { triggerHaptic } from '../utils/haptic';
 
@@ -314,28 +314,6 @@ export default function Home() {
                                 {formatDate(flight.endTime)} • {flight.timeZone}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Weather Zone */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <WeatherCard
-                            type="departure"
-                            data={{
-                                city: flight.startLocation.split('(')[0].trim(),
-                                temperature: 18,
-                                condition: 'cloudy',
-                                windSpeed: 12
-                            }}
-                        />
-                        <WeatherCard
-                            type="arrival"
-                            data={{
-                                city: flight.endLocation.split('(')[0].trim(),
-                                temperature: 24,
-                                condition: 'sunny',
-                                windSpeed: 8
-                            }}
-                        />
                     </div>
 
                     {/* Details Zone */}
