@@ -15,6 +15,7 @@ A modern, real-time flight tracking web application built with Next.js and the A
 - **Auto-Refresh**: Polls for updates every 30 seconds to keep data fresh
 
 ### User Experience
+- **Immersive Interactions**: Staggered entry animations and tactile micro-interactions
 - **Skeleton Shimmer**: Smooth loading states for better perceived performance
 - **Haptic Feedback**: Tactile vibration on mobile interactions (buttons, toggles, success/error states)
 - **Dark Mode**: Persisted theme preference with smooth transitions
@@ -39,6 +40,7 @@ Visit the live application: [FlightTracker on Vercel](https://shxjxr98-flight-tr
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
 - **Language**: TypeScript
 - **Styling**: Vanilla CSS with custom design system (Variables, Glass-morphism)
+- **Animation**: [Framer Motion](https://www.framer.com/motion/) for immersive interactions
 - **API**: [AviationStack](https://aviationstack.com/) + Custom Mock Data Layer
 - **Deployment**: Vercel
 
